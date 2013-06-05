@@ -1,5 +1,5 @@
 Name:		fficxx-runtime
-Version:	0.0.999
+Version:	0.1
 Synopsis:	Runtime for fficxx-generated library
 Description: 	Runtime for fficxx-generated library
 License:        BSD3
@@ -18,5 +18,7 @@ Library
                    base>4
 
   Exposed-Modules: 
-                   Bindings.Cxx.Runtime.Cast
+                   FFICXX.Runtime.Cast
 
+  Include-dirs:    csrc
+  Install-includes: MacroPatternMatch.h

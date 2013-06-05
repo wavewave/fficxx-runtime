@@ -3,7 +3,19 @@
              EmptyDataDecls, ExistentialQuantification, ScopedTypeVariables, 
              GADTs #-}
 
-module Bindings.Cxx.Runtime.Cast where
+-----------------------------------------------------------------------------
+-- |
+-- Module      : FFICXX.Runtime.Cast
+-- Copyright   : (c) 2011-2013 Ian-Woo Kim
+--
+-- License     : BSD3
+-- Maintainer  : Ian-Woo Kim <ianwookim@gmail.com>
+-- Stability   : experimental
+-- Portability : GHC
+--
+-----------------------------------------------------------------------------
+
+module FFICXX.Runtime.Cast where
 
 import Data.Word
 import Foreign.C            
