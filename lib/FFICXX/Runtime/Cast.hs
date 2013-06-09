@@ -3,6 +3,7 @@
              EmptyDataDecls, ExistentialQuantification, ScopedTypeVariables, 
              GADTs #-}
 
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      : FFICXX.Runtime.Cast
@@ -25,6 +26,8 @@ import Foreign.Marshal.Array
 
 import System.IO.Unsafe
 
+class IsRawType a 
+
 class Castable a b where
   cast :: a -> b 
   uncast :: b -> a 
@@ -43,11 +46,18 @@ class GADTTypeable a where
   data GADTType a :: * -> *
   data EGADTType a :: *
 
+class IsCType a where 
 
 
+instance IsCType CChar
+instance IsCType CInt
+instance IsCType CUInt 
+instance IsCType CString 
+instance IsCType CULong 
+instance IsCType CLong
 
+-- cause incoherent instances but cannot avoid it now
 {-
--- eliminate this for the time being to have a solution with Repl
 instance Castable a a where
   cast = id
   uncast = id
@@ -56,6 +66,42 @@ instance Castable a a where
 instance Castable () () where
   cast = id 
   uncast = id 
+
+
+instance Castable (Ptr CInt) (Ptr CInt) where 
+  cast = id 
+  uncast = id 
+
+instance Castable (Ptr CChar) (Ptr CChar) where 
+  cast = id 
+  uncast = id 
+
+instance Castable (Ptr CUInt) (Ptr CUInt) where 
+  cast = id 
+  uncast = id 
+
+instance Castable (Ptr CULong) (Ptr CULong) where 
+  cast = id 
+  uncast = id 
+
+instance Castable (Ptr CLong) (Ptr CLong) where 
+  cast = id 
+  uncast = id 
+
+
+
+instance Castable CUInt CUInt where
+  cast = id 
+  uncast = id 
+
+instance Castable CInt CInt where 
+  cast = id 
+  uncast = id 
+
+instance Castable CULong CULong where 
+  cast = id 
+  uncast = id 
+
 
 instance Castable Int CInt where
   cast = fromIntegral 
@@ -88,10 +134,6 @@ instance Castable String CString where
 instance Castable [String] (Ptr CString) where
   cast xs = unsafePerformIO (mapM  newCString xs >>= newArray)
   uncast _c_xs = undefined
-
-instance Castable (Ptr a) (Ptr a) where 
-  cast = id 
-  uncast = id 
 
 
 instance (Castable a a', Castable b b') => Castable (a->b) (a'->b') where
