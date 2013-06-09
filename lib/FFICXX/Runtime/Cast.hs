@@ -64,6 +64,10 @@ instance Castable Int CInt where
 instance Castable Word CUInt where
   cast = fromIntegral
   uncast = fromIntegral
+
+instance Castable Word8 CChar where
+  cast = fromIntegral 
+  uncast = fromIntegral
   
 instance Castable Double CDouble where
   cast = realToFrac
@@ -84,6 +88,11 @@ instance Castable String CString where
 instance Castable [String] (Ptr CString) where
   cast xs = unsafePerformIO (mapM  newCString xs >>= newArray)
   uncast _c_xs = undefined
+
+instance Castable (Ptr a) (Ptr a) where 
+  cast = id 
+  uncast = id 
+
 
 instance (Castable a a', Castable b b') => Castable (a->b) (a'->b') where
   cast f = cast . f . uncast
