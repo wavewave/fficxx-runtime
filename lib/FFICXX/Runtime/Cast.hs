@@ -98,6 +98,10 @@ instance Castable CInt CInt where
   cast = id 
   uncast = id 
 
+instance Castable CLong CLong where
+  cast = id
+  uncast = id
+
 instance Castable CULong CULong where 
   cast = id 
   uncast = id 
