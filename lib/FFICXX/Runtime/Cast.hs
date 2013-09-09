@@ -37,6 +37,14 @@ class FPtr a where
   get_fptr :: a -> ForeignPtr (Raw a) 
   cast_fptr_to_obj :: ForeignPtr (Raw a) -> a
 
+
+class FunPtrWrappable a where
+  type FunPtrHsType a :: *
+  type FunPtrType a :: *
+  data FunPtrWrapped a :: *  
+  fptrWrap :: FunPtrWrapped a -> IO (FunPtr (FunPtrType a)) 
+  wrap :: FunPtrHsType a -> FunPtrWrapped a 
+
 class Existable a where
   data Exist a :: *  
 
@@ -68,6 +76,29 @@ instance Castable () () where
   uncast = id 
 
 
+instance Castable CDouble CDouble where
+  cast = id
+  uncast = id
+
+
+
+instance Castable CUInt CUInt where
+  cast = id 
+  uncast = id 
+
+instance Castable CInt CInt where 
+  cast = id 
+  uncast = id 
+
+instance Castable CLong CLong where
+  cast = id
+  uncast = id
+
+instance Castable CULong CULong where 
+  cast = id 
+  uncast = id 
+
+
 instance Castable (Ptr CInt) (Ptr CInt) where 
   cast = id 
   uncast = id 
@@ -89,22 +120,6 @@ instance Castable (Ptr CLong) (Ptr CLong) where
   uncast = id 
 
 
-
-instance Castable CUInt CUInt where
-  cast = id 
-  uncast = id 
-
-instance Castable CInt CInt where 
-  cast = id 
-  uncast = id 
-
-instance Castable CLong CLong where
-  cast = id
-  uncast = id
-
-instance Castable CULong CULong where 
-  cast = id 
-  uncast = id 
 
 
 instance Castable Int CInt where
