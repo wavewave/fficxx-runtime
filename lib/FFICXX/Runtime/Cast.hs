@@ -119,8 +119,13 @@ instance Castable (Ptr CLong) (Ptr CLong) where
   cast = id 
   uncast = id 
 
+instance Castable (Ptr CDouble) (Ptr CDouble) where 
+  cast = id 
+  uncast = id 
 
-
+instance Castable (Ptr CString) (Ptr CString) where 
+  cast = id 
+  uncast = id 
 
 instance Castable Int CInt where
   cast = fromIntegral 
