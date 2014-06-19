@@ -1,13 +1,18 @@
-{-# LANGUAGE ForeignFunctionInterface, TypeFamilies, MultiParamTypeClasses, 
-             FlexibleInstances, TypeSynonymInstances, 
-             EmptyDataDecls, ExistentialQuantification, ScopedTypeVariables, 
-             GADTs #-}
+{-# LANGUAGE EmptyDataDecls #-}
+{-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 
 -----------------------------------------------------------------------------
 -- |
 -- Module      : FFICXX.Runtime.Cast
--- Copyright   : (c) 2011-2013 Ian-Woo Kim
+-- Copyright   : (c) 2011-2014 Ian-Woo Kim
 --
 -- License     : BSD3
 -- Maintainer  : Ian-Woo Kim <ianwookim@gmail.com>
@@ -18,8 +23,10 @@
 
 module FFICXX.Runtime.Cast where
 
+import Data.String
 import Data.Word
-import Foreign.C            
+import Foreign.C
+import Foreign.C.String
 import Foreign.Ptr
 import Foreign.ForeignPtr
 import Foreign.Marshal.Array
@@ -64,6 +71,9 @@ instance IsCType CString
 instance IsCType CULong 
 instance IsCType CLong
 
+instance IsString CString where
+  fromString str = unsafePerformIO (newCString str)
+
 -- cause incoherent instances but cannot avoid it now
 {-
 instance Castable a a where
@@ -98,7 +108,7 @@ instance Castable CULong CULong where
   cast = id 
   uncast = id 
 
-
+ 
 instance Castable (Ptr CInt) (Ptr CInt) where 
   cast = id 
   uncast = id 
@@ -126,6 +136,11 @@ instance Castable (Ptr CDouble) (Ptr CDouble) where
 instance Castable (Ptr CString) (Ptr CString) where 
   cast = id 
   uncast = id 
+
+instance Castable (Ptr ()) (Ptr ()) where
+  cast = id
+  uncast = id
+
 
 instance Castable Int CInt where
   cast = fromIntegral 
